@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/User');
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { check, validationResult } = require('express-validator');
+const User = require('../models/User');
 
 // @route   POST api/auth/register
 // @desc    Register user
@@ -39,14 +40,37 @@ router.post('/register', [
             }
         }
 
+        // Check for admin registration
+        if (username === process.env.ADMIN_USERNAME && password === process.env.ADMIN_PASSWORD) {
+            user.role = 'admin';
+        }
+
         await user.save();
 
         // Create JWT
-        const payload = { user: { id: user.id, role: user.role } };
-        jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '5h' }, (err, token) => {
-            if (err) throw err;
-            res.json({ token });
-        });
+        const payload = { 
+            user: { 
+                id: user.id,
+                role: user.role 
+            } 
+        };
+
+        jwt.sign(
+            payload,
+            process.env.JWT_SECRET,
+            { expiresIn: '5h' },
+            (err, token) => {
+                if (err) throw err;
+                res.json({ 
+                    token,
+                    user: {
+                        id: user.id,
+                        username: user.username,
+                        role: user.role
+                    }
+                });
+            }
+        );
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Server error');
@@ -80,11 +104,115 @@ router.post('/login', [
         }
 
         // Create JWT
-        const payload = { user: { id: user.id, role: user.role } };
-        jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '5h' }, (err, token) => {
-            if (err) throw err;
-            res.json({ token, user: { id: user.id, username: user.username, role: user.role } });
-        });
+        const payload = { 
+            user: { 
+                id: user.id,
+                role: user.role 
+            } 
+        };
+
+        jwt.sign(
+            payload,
+            process.env.JWT_SECRET,
+            { expiresIn: '5h' },
+            (err, token) => {
+                if (err) throw err;
+                res.json({ 
+                    token,
+                    user: {
+                        id: user.id,
+                        username: user.username,
+                        role: user.role
+                    }
+                });
+            }
+        );
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server error');
+    }
+});
+
+// @route   GET api/auth/user
+// @desc    Get current user data
+router.get('/user', async (req, res) => {
+    try {
+        // Get token from header
+        const token = req.header('x-auth-token');
+        if (!token) {
+            return res.status(401).json({ msg: 'No token, authorization denied' });
+        }
+
+        // Verify token
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const user = await User.findById(decoded.user.id).select('-password');
+        
+        res.json(user);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server error');
+    }
+});
+
+// @route   POST api/auth/change-password
+// @desc    Change user password
+router.post('/change-password', [
+    check('currentPassword', 'Current password is required').exists(),
+    check('newPassword', 'New password must be 6+ characters').isLength({ min: 6 })
+], async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { currentPassword, newPassword } = req.body;
+
+    try {
+        // Get token from header
+        const token = req.header('x-auth-token');
+        if (!token) {
+            return res.status(401).json({ msg: 'No token, authorization denied' });
+        }
+
+        // Verify token and get user
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const user = await User.findById(decoded.user.id);
+        
+        // Verify current password
+        const isMatch = await bcrypt.compare(currentPassword, user.password);
+        if (!isMatch) {
+            return res.status(400).json({ msg: 'Current password is incorrect' });
+        }
+        
+        // Hash new password and save
+        user.password = newPassword;
+        await user.save();
+        
+        res.json({ msg: 'Password changed successfully' });
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server error');
+    }
+});
+
+// @route   DELETE api/auth/delete-account
+// @desc    Delete user account
+router.delete('/delete-account', async (req, res) => {
+    try {
+        // Get token from header
+        const token = req.header('x-auth-token');
+        if (!token) {
+            return res.status(401).json({ msg: 'No token, authorization denied' });
+        }
+
+        // Verify token and get user
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const userId = decoded.user.id;
+        
+        // Remove user
+        await User.findByIdAndRemove(userId);
+        
+        res.json({ msg: 'Account deleted' });
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Server error');
