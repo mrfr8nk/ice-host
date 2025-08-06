@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | SubZero</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-snowflake"></i>
+                    <h2>SubZero</h2>
+                </div>
+                <div class="user-info">
+                    <span id="usernameDisplay"></span>
+                    <small id="userRole"></small>
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="active" data-section="dashboard">
+                        <i class="fas fa-home"></i>
+                        <span>Dashboard</span>
+                    </li>
+                    <li data-section="deployments">
+                        <i class="fas fa-rocket"></i>
+                        <span>Deployments</span>
+                    </li>
+                    <li data-section="wallet">
+                        <i class="fas fa-wallet"></i>
+                        <span>Wallet</span>
+                    </li>
+                    <li data-section="settings">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </li>
+                    <li id="logoutBtn">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="coin-balance">
+                    <i class="fas fa-coins"></i>
+                    <span id="coinBalance">0</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Header -->
+        <div class="mobile-header">
+            <button id="menuToggle" class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="mobile-logo">
+                <i class="fas fa-snowflake"></i>
+                <h2>SubZero</h2>
+            </div>
+            <div class="mobile-coins">
+                <i class="fas fa-coins"></i>
+                <span id="mobileCoinBalance">0</span>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Section -->
+            <section id="dashboardSection" class="content-section active">
+                <h2>Dashboard Overview</h2>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <i class="fas fa-rocket"></i>
+                        <h3>Active Bots</h3>
+                        <p id="activeBotsCount">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-clock"></i>
+                        <h3>Inactive Bots</h3>
+                        <p id="inactiveBotsCount">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-coins"></i>
+                        <h3>Your Coins</h3>
+                        <p id="dashboardCoins">0</p>
+                    </div>
+                </div>
+                
+                <div class="quick-actions">
+                    <h3>Quick Actions</h3>
+                    <div class="actions-grid">
+                        <button id="newDeploymentBtn" class="action-btn">
+                            <i class="fas fa-plus"></i>
+                            <span>New Deployment</span>
+                        </button>
+                        <button id="claimDailyBtn" class="action-btn">
+                            <i class="fas fa-gift"></i>
+                            <span>Claim Daily</span>
+                        </button>
+                        <button id="viewReferralsBtn" class="action-btn">
+                            <i class="fas fa-users"></i>
+                            <span>Refer Friends</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Deployments Section -->
+            <section id="deploymentsSection" class="content-section">
+                <div class="section-header">
+                    <h2>Your Deployments</h2>
+                    <button id="addDeploymentBtn" class="btn btn-primary">
+                        <i class="fas fa-plus"></i>
+                        <span>New Deployment</span>
+                    </button>
+                </div>
+                
+                <div class="deployments-list" id="deploymentsList">
+                    <!-- Deployments will be loaded here -->
+                </div>
+                
+                <!-- Deployment Modal -->
+                <div id="deploymentModal" class="modal">
+                    <div class="modal-content glass-container">
+                        <span class="close-modal">&times;</span>
+                        <h2>New Deployment</h2>
+                        <p>Each deployment costs 10 coins</p>
+                        
+                        <form id="deploymentForm">
+                            <div class="form-group">
+                                <label for="deployBranchName">Service Name</label>
+                                <input type="text" id="deployBranchName" required>
+                                <div class="validation-icons">
+                                    <i id="branchValidIcon" class="fas fa-check-circle valid"></i>
+                                    <i id="branchInvalidIcon" class="fas fa-times-circle invalid"></i>
+                                </div>
+                                <div id="branchSuggestion" class="suggestion"></div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="deploySessionId">SESSION_ID</label>
+                                <input type="text" id="deploySessionId" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="deployOwnerNumber">OWNER_NUMBER</label>
+                                <input type="text" id="deployOwnerNumber" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="deployPrefix">PREFIX</label>
+                                <input type="text" id="deployPrefix" value=".">
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary">
+                                <span id="deployBtnText">Deploy</span>
+                                <span id="deployBtnSpinner" class="spinner"><i class="fas fa-circle-notch fa-spin"></i></span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Wallet Section -->
+            <section id="walletSection" class="content-section">
+                <h2>Your Wallet</h2>
+                
+                <div class="wallet-card glass-container">
+                    <div class="wallet-header">
+                        <i class="fas fa-wallet"></i>
+                        <h3>Coin Balance</h3>
+                    </div>
+                    <div class="wallet-balance">
+                        <span id="walletCoins">0</span>
+                        <small>coins</small>
+                    </div>
+                    
+                    <div class="wallet-actions">
+                        <button id="claimDailyWalletBtn" class="btn btn-primary">
+                            <i class="fas fa-gift"></i>
+                            <span>Claim Daily (5 coins)</span>
+                        </button>
+                    </div>
+                    
+                    <div class="next-claim">
+                        <p>Next claim available in: <span id="nextClaimTime">24 hours</span></p>
+                    </div>
+                </div>
+                
+                <div class="referral-card glass-container">
+                    <h3>Referral Program</h3>
+                    <p>Earn 5 coins for each friend who signs up using your link</p>
+                    
+                    <div class="referral-link">
+                        <input type="text" id="referralLink" readonly>
+                        <button id="copyReferralBtn" class="btn btn-secondary">
+                            <i class="fas fa-copy"></i>
+                            <span>Copy</span>
+                        </button>
+                    </div>
+                    
+                    <div class="referral-stats">
+                        <div class="stat">
+                            <span id="referralCount">0</span>
+                            <small>Referrals</small>
+                        </div>
+                        <div class="stat">
+                            <span id="referralEarnings">0</span>
+                            <small>Coins Earned</small>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Settings Section -->
+            <section id="settingsSection" class="content-section">
+                <h2>Account Settings</h2>
+                
+                <div class="settings-card glass-container">
+                    <h3>Change Password</h3>
+                    <form id="changePasswordForm">
+                        <div class="form-group">
+                            <label for="currentPassword">Current Password</label>
+                            <input type="password" id="currentPassword" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="newPassword">New Password</label>
+                            <input type="password" id="newPassword" minlength="6" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="confirmPassword">Confirm New Password</label>
+                            <input type="password" id="confirmPassword" minlength="6" required>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">
+                            <span>Update Password</span>
+                        </button>
+                    </form>
+                </div>
+                
+                <div class="danger-zone glass-container">
+                    <h3>Danger Zone</h3>
+                    <button id="deleteAccountBtn" class="btn btn-danger">
+                        <i class="fas fa-trash"></i>
+                        <span>Delete Account</span>
+                    </button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="js/dashboard.js"></script>
+</body>
+</html>
