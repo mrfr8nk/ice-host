@@ -388,5 +388,440 @@ body {
     gap: 10px;
 }
 
-.mobile-logo i {
-    color: var(--
+/* Dashboard Content Styles */
+.main-content {
+    flex: 1;
+    padding: 20px;
+    background: rgba(10, 25, 47, 0.3);
+    min-height: 100vh;
+}
+
+.content-section {
+    display: none;
+}
+
+.content-section.active {
+    display: block;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+/* Stats Grid */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.stat-card {
+    padding: 20px;
+    text-align: center;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+}
+
+.stat-card i {
+    font-size: 2rem;
+    color: var(--accent);
+    margin-bottom: 15px;
+}
+
+.stat-card h3 {
+    font-size: 1rem;
+    margin-bottom: 10px;
+    color: var(--text-secondary);
+}
+
+.stat-card p {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+/* Quick Actions */
+.quick-actions {
+    margin-bottom: 30px;
+}
+
+.quick-actions h3 {
+    margin-bottom: 15px;
+}
+
+.actions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.action-btn {
+    padding: 20px;
+    border-radius: 8px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.action-btn:hover {
+    background: rgba(100, 255, 218, 0.1);
+    transform: translateY(-3px);
+}
+
+.action-btn i {
+    font-size: 1.5rem;
+    color: var(--accent);
+}
+
+/* Deployments List */
+.deployments-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.deployment-card {
+    padding: 20px;
+    transition: transform 0.3s ease;
+}
+
+.deployment-card:hover {
+    transform: translateY(-5px);
+}
+
+.deployment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(100, 255, 218, 0.1);
+}
+
+.deployment-header h3 {
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+.status-badge {
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.status-badge.active {
+    background: rgba(76, 175, 80, 0.2);
+    color: var(--success);
+}
+
+.status-badge.inactive {
+    background: rgba(255, 152, 0, 0.2);
+    color: var(--warning);
+}
+
+.status-badge.pending {
+    background: rgba(33, 150, 243, 0.2);
+    color: #2196f3;
+}
+
+.deployment-details p {
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+}
+
+.deployment-details strong {
+    color: var(--text-secondary);
+}
+
+.deployment-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.btn-sm {
+    padding: 8px 15px;
+    font-size: 0.8rem;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.empty-state i {
+    font-size: 3rem;
+    color: var(--accent);
+    margin-bottom: 20px;
+}
+
+.empty-state p {
+    margin-bottom: 20px;
+    color: var(--text-secondary);
+}
+
+/* Wallet Styles */
+.wallet-card, .referral-card {
+    padding: 25px;
+    margin-bottom: 20px;
+}
+
+.wallet-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.wallet-header i {
+    font-size: 1.5rem;
+    color: var(--accent);
+}
+
+.wallet-balance {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: baseline;
+    gap: 5px;
+}
+
+.wallet-balance small {
+    font-size: 1rem;
+    color: var(--text-secondary);
+}
+
+.wallet-actions {
+    margin-bottom: 20px;
+}
+
+.next-claim {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.referral-link {
+    display: flex;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.referral-link input {
+    flex: 1;
+    background: rgba(10, 25, 47, 0.6);
+    border: 1px solid rgba(100, 255, 218, 0.2);
+    color: var(--text-primary);
+    padding: 10px 15px;
+    border-radius: 6px;
+}
+
+.referral-stats {
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.referral-stats .stat {
+    text-align: center;
+}
+
+.referral-stats .stat span {
+    font-size: 1.5rem;
+    font-weight: 700;
+    display: block;
+}
+
+.referral-stats .stat small {
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+}
+
+/* Settings Styles */
+.settings-card {
+    padding: 25px;
+    margin-bottom: 20px;
+}
+
+.settings-card h3 {
+    margin-bottom: 20px;
+}
+
+.danger-zone {
+    padding: 25px;
+    border: 1px solid rgba(244, 67, 54, 0.3);
+}
+
+.danger-zone h3 {
+    color: var(--error);
+    margin-bottom: 15px;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    overflow: auto;
+}
+
+.modal-content {
+    margin: 5% auto;
+    max-width: 600px;
+    width: 90%;
+    animation: modalFadeIn 0.3s;
+}
+
+.close-modal {
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--text-secondary);
+}
+
+.close-modal:hover {
+    color: var(--text-primary);
+}
+
+/* Tooltip */
+.tooltip {
+    position: absolute;
+    background: var(--secondary);
+    color: var(--accent);
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+}
+
+.tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: var(--secondary) transparent transparent transparent;
+}
+
+/* Animations */
+@keyframes modalFadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive Styles */
+@media (max-width: 992px) {
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        z-index: 100;
+        transform: translateX(-100%);
+    }
+    
+    .sidebar.active {
+        transform: translateX(0);
+    }
+    
+    .mobile-header {
+        display: flex;
+    }
+    
+    .main-content {
+        margin-left: 0;
+        padding-top: 70px;
+    }
+    
+    .hamburger.active span:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px);
+    }
+    
+    .hamburger.active span:nth-child(2) {
+        opacity: 0;
+    }
+    
+    .hamburger.active span:nth-child(3) {
+        transform: rotate(-45deg) translate(7px, -6px);
+    }
+}
+
+@media (max-width: 768px) {
+    .stats-grid, .actions-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .deployments-list {
+        grid-template-columns: 1fr;
+    }
+    
+    .modal-content {
+        margin: 20px auto;
+    }
+}
+
+@media (max-width: 576px) {
+    .auth-form {
+        padding: 30px 20px;
+    }
+    
+    .hero {
+        padding: 40px 15px;
+    }
+    
+    .hero h1 {
+        font-size: 2rem;
+    }
+    
+    .cta-buttons {
+        flex-direction: column;
+    }
+    
+    .feature-card {
+        padding: 20px;
+    }
+    
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .section-header h2 {
+        font-size: 1.3rem;
+    }
+    
+    .wallet-actions button {
+        width: 100%;
+    }
+    
+    .referral-link {
+        flex-direction: column;
+    }
+}
